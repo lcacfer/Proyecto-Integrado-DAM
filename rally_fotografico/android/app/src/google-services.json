@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "113896896541",
+    "project_id": "rally-fotografico-ccb4e",
+    "storage_bucket": "rally-fotografico-ccb4e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113896896541:android:8ea3391c568d864cd5aef4",
+        "android_client_info": {
+          "package_name": "com.example.rally_fotografico"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3piGl2VqqA2rwlaHXMTdDIJvDr31ZYWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113896896541:android:98484be4fc4db82cd5aef4",
+        "android_client_info": {
+          "package_name": "com.lola.rallyFotografico"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3piGl2VqqA2rwlaHXMTdDIJvDr31ZYWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

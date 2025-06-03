@@ -1,58 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final usuarioController = TextEditingController();
-    final correoController = TextEditingController();
-    final contrasenaController = TextEditingController();
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
 
+class _RegisterScreenState extends State<RegisterScreen> {
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Future<void> _registrar() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      await FirebaseFirestore.instance
+          .collection('usuarios')
+          .doc(emailController.text)
+          .set({
+        'usuario': usernameController.text,
+        'email': emailController.text,
+        'isAdmin': false,
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Cuenta creada correctamente")),
+      );
+
+      Navigator.pushReplacementNamed(context, '/home');
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+      String mensaje = 'Error desconocido';
+      if (e.code == 'email-already-in-use') {
+        mensaje = 'Ya existe una cuenta con ese correo';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(mensaje)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: BackButton()),
+      appBar: AppBar(title: const Text("Registro")),
       body: Padding(
-        padding: const EdgeInsets.all(40),
+        padding: const EdgeInsets.all(30),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: usuarioController,
-              decoration: const InputDecoration(labelText: 'Usuario'),
+              controller: usernameController,
+              decoration: const InputDecoration(labelText: 'Nombre de usuario'),
             ),
             TextField(
-              controller: correoController,
-              decoration: const InputDecoration(labelText: 'Correo'),
+              controller: emailController,
+              decoration: const InputDecoration(labelText: 'Correo electrónico'),
             ),
             TextField(
-              controller: contrasenaController,
+              controller: passwordController,
               obscureText: true,
               decoration: const InputDecoration(labelText: 'Contraseña'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                try {
-                  await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                    email: correoController.text.trim(),
-                    password: contrasenaController.text.trim(),
-                  );
-
-                  Navigator.pushReplacementNamed(context, '/home');
-                } on FirebaseAuthException catch (e) {
-                  if (e.code == 'email-already-in-use') {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Ya existe una cuenta')),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error: ${e.message}')),
-                    );
-                  }
-                }
-              },
-              child: const Text('Iniciar'),
+              onPressed: _registrar,
+              child: const Text('Registrarse'),
             ),
           ],
         ),

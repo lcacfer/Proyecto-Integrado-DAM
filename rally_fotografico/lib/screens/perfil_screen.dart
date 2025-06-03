@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class PerfilScreen extends StatelessWidget {
+class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
 
   @override
+  State<PerfilScreen> createState() => _PerfilScreenState();
+}
+
+class _PerfilScreenState extends State<PerfilScreen> {
+  final usuario = FirebaseAuth.instance.currentUser;
+
+  @override
   Widget build(BuildContext context) {
-    final usuarioController = TextEditingController();
-    final correoController = TextEditingController();
-    final contrasenaController = TextEditingController();
-    final nuevaContrasenaController = TextEditingController();
+    final nombre = usuario?.displayName ?? 'Sin nombre';
+    final correo = usuario?.email ?? 'Sin correo';
 
     return Scaffold(
       appBar: AppBar(
@@ -18,34 +24,41 @@ class PerfilScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.grey,
+            const Center(
+              child: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.grey,
+              ),
             ),
             const SizedBox(height: 20),
-            TextField(
-              controller: usuarioController,
-              decoration: const InputDecoration(labelText: 'Usuario'),
-            ),
-            TextField(
-              controller: correoController,
-              decoration: const InputDecoration(labelText: 'Correo'),
-            ),
-            TextField(
-              controller: contrasenaController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Contraseña'),
-            ),
-            TextField(
-              controller: nuevaContrasenaController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Contraseña nueva'),
+            Text("Usuario: $nombre", style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
+            Text("Correo: $correo", style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 30),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.lock),
+              label: const Text("Cambiar contraseña"),
+              onPressed: () {
+                Navigator.pushNamed(context, '/cambiar_contrasena');
+              },
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Guardar'),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.photo_library),
+              label: const Text("Mis fotos"),
+              onPressed: () {
+                Navigator.pushNamed(context, '/misfotos');
+              },
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.emoji_events),
+              label: const Text("Concursos"),
+              onPressed: () {
+                Navigator.pushNamed(context, '/concursos');
+              },
             ),
           ],
         ),

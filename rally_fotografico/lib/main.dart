@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart'; 
 
+import 'screens/crear_concurso_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -10,6 +11,9 @@ import 'screens/home_screen.dart';
 import 'screens/perfil_screen.dart';
 import 'screens/admin_screen.dart';
 import 'screens/subir_foto_screen.dart';
+import 'screens/cambiar_contrasena_screen.dart';
+import 'screens/mis_fotos_screen.dart';
+import 'screens/concursos_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +40,10 @@ class RallyApp extends StatelessWidget {
         '/perfil': (context) => const PerfilScreen(),
         '/subir': (context) => const SubirFotoScreen(),
         '/admin': (context) => const AdminScreen(),
+        '/cambiar_contrasena': (context) => const CambiarContrasenaScreen(),
+        '/misfotos': (context) => const MisFotosScreen(),
+        '/concursos': (context) => const ConcursosScreen(),
+        '/crear_concurso': (context) => CrearConcursoScreen(),
       },
     );
   }
